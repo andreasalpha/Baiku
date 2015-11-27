@@ -36,7 +36,7 @@
     <string name="exp_magnetic">Try to find a magnetic field with a magnitude of 1.0 mT (= 1000.0 µT). If you do so, you will get 100 points. </string>
     <string name="song_expl">Try to find or create a very loud noise. If it is loud enough, you will get 50 points!</string>
     <string name="combination_two">Try to find a magnetic field of 1.0 mT as well as a light intensity of 1000.0 lx!</string>
-    <string name="powerUpOffensive">offensive</string>
+    <string name="powerUpOffensive">Offensive</string>
     <string name="powerUpOffensiveUpdateFrequency">increase update frquency</string>
     <string name="powerUpOffensiveEasyKill">easy kill move</string>
     <string name="powerUpDefensiveStopSignal">Signal stop Moving</string>
