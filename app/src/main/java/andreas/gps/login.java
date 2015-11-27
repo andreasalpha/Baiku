@@ -1,6 +1,8 @@
 package andreas.gps;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,9 @@ public class login extends AppCompatActivity implements View.OnClickListener{
     TextView register_text;
     private String result = "";
     private JSONObject DataOnServer;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    Intent intent;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
         //login
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_low_in_rank);
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         login_edit = (EditText)findViewById(R.id.login_edit);
@@ -46,6 +52,10 @@ public class login extends AppCompatActivity implements View.OnClickListener{
 
         login_button.setOnClickListener(this);
         register_text.setOnClickListener(this);
+
+        preferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.apply();
 
         getMessage();
 
@@ -61,12 +71,17 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                 if (!correctLogin(login_edit_string,password_edit_string)){
                     Toast.makeText(getApplicationContext(), "Username or password is incorrect.", Toast.LENGTH_SHORT).show();
                 }
+                editor.putString("myusername",login_edit_string);
+                editor.apply();
+
+                intent = new Intent(this,mainInt.class);
+                startActivity(intent);
 
                 break;
 
             case R.id.register_text:
 
-                Intent intent = new Intent(this, Register.class);
+                intent = new Intent(this, Register.class);
                 startActivity(intent);
 
                 break;
