@@ -1,6 +1,8 @@
 package andreas.gps;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,20 +24,20 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Iterator;
 
 public class Register extends AppCompatActivity implements View.OnClickListener{
 
     Integer SESSIONID = 8;
     Button register_button;
     EditText login_register_edit, password_register_edit, email_edit, password_confirm_edit;
-    Servercomm mServercomm = new Servercomm();
     private String Username;
     private String Password;
     private String Email;
     private String result = "";
     private JSONObject DataOnServer;
     private static final String TAG = "lmao";
+    SharedPreferences sharedpreferences;
+    SharedPreferences.Editor editor;
 
     @Override
 
@@ -48,8 +50,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         //login
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_low_in_rank);
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        sharedpreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        editor = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE).edit();
         login_register_edit = (EditText) findViewById(R.id.login_register_edit);
         password_register_edit = (EditText) findViewById(R.id.password_register_edit);
         email_edit = (EditText) findViewById(R.id.email_edit);
@@ -75,7 +79,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         } else if (!password_register_string.equals(password_confirm_string)) {
             Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
 
-        } else if (email_edit_string.indexOf("@") <= -1) {
+        } else if (!email_edit_string.contains("@")) {
             Toast.makeText(getApplicationContext(), "Please fill in a valid email adress.", Toast.LENGTH_SHORT).show();
 
         } else if (containsUsername(login_edit_string)){
@@ -147,8 +151,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         new GetAsyncTask().execute("http://daddi.cs.kuleuven.be/peno3/data/B3_test/" + SESSIONID);
     }
 
-    public void backToLogin(){
-        Intent intent = new Intent(this, login.class);
+    public void ToMainInt(){
+        Intent intent = new Intent(this, mainInt.class);
         startActivity(intent);
     }
 
@@ -191,9 +195,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            Log.i(TAG,e.toString());
 
             e.printStackTrace();
         }
+        editor.putString("myusername", Username);
+        editor.apply();
         String status = "Put Data to server succesfully";
         return status;
     }
@@ -221,6 +228,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             conn.disconnect();
 
         } catch (Exception e) {
+            Log.i(TAG,e.toString());
         }
         return result;
     }
@@ -232,7 +240,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             return createAccount(Username, Password, Email, urls[0]);}
 
         protected void onPostExecute(String result) {
-            backToLogin();
+            ToMainInt();
         }
     }
 
@@ -246,7 +254,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener{
             try{
                 DataOnServer = new JSONObject(result);
             }
-            catch (Exception e){}
+            catch (Exception e){
+                Log.i(TAG,e.toString());
+            }
         }
     }
 
