@@ -319,7 +319,6 @@ public class mainInt extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -394,11 +393,20 @@ public class mainInt extends AppCompatActivity
         Button logout = (Button)findViewById(R.id.logout_toolbar);
         Button user = (Button)findViewById(R.id.user_toolbar);
 
-        if (preferences.getString("myusername","").equals("")){
-            login.setVisibility(View.GONE);
-            logout.setVisibility(View.VISIBLE);
-            user.setVisibility(View.VISIBLE);
+        try {
+            if (!preferences.getString("myusername", "").equals("")) {
+                login.setVisibility(View.VISIBLE);
+                logout.setVisibility(View.GONE);
+                user.setVisibility(View.GONE);
+            } else {
+                login.setVisibility(View.GONE);
+                logout.setVisibility(View.VISIBLE);
+                user.setVisibility(View.VISIBLE);
 
+            }
+
+        } catch ( Exception e){
+            Log.i(TAG,e.toString());
         }
     }
 
@@ -416,9 +424,7 @@ public class mainInt extends AppCompatActivity
         Log.i(TAG,"Connecting apiclient");
         mGoogleApiClient.connect();
 
-        if (preferences.getString("myusername","").equals("")){
-            LoggedIn();
-        }
+        LoggedIn();
 
     }
 
