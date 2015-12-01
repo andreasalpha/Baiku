@@ -41,4 +41,34 @@
             </item>
         </menu>
     </item>
+
+    <item android:title = "User">
+        <menu>
+            <item
+                android:id="@+id/login_toolbar"
+                android:title="@string/login_button_text"
+                android:icon="@drawable/ic_stat_name"
+                android:visible="true"
+            />
+
+            <item
+                android:id="@+id/user_toolbar"
+                android:title="User Profile"
+                android:icon="@drawable/ic_stat_name"
+                android:visible="false"
+
+                />
+
+            <item
+                android:id="@+id/logout_toolbar"
+                android:title="Logout"
+                android:icon="@drawable/ic_stat_name"
+                android:visible="false"
+
+                />
+
+
+        </menu>
+
+    </item>
 </menu>

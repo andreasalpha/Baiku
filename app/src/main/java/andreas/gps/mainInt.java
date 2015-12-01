@@ -93,6 +93,10 @@ public class mainInt extends AppCompatActivity
         Intent intent = new Intent(this, login.class);
         startActivity(intent);
     }
+    public void switchLogout(View view){
+        editor.putString("myusername", "");
+    }
+    public void switchUser(View view){}
     public void switchData1(View view) {
         Intent intent = new Intent(this, data1.class);
         startActivity(intent);
@@ -328,9 +332,7 @@ public class mainInt extends AppCompatActivity
             case R.id.gameMode:
                 switchGameMode(null);
                 break;
-            case R.id.login_toolbar:
-                switchLogin(null);
-                break;
+
         }
         //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_settings) {
@@ -369,12 +371,35 @@ public class mainInt extends AppCompatActivity
         else if (id == R.id.minigame3) {
             switchMinigame3(null);
         }
+        else if (id == R.id.login_toolbar) {
+            switchLogin(null);
+        }
+        else if (id == R.id.logout_toolbar){
+            switchLogout(null);
+        }
+        else if (id == R.id.user_toolbar){
+            switchUser(null);
+        }
 
 
         /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;*/
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    public void LoggedIn(){
+
+        Button login = (Button)findViewById(R.id.login_toolbar);
+        Button logout = (Button)findViewById(R.id.logout_toolbar);
+        Button user = (Button)findViewById(R.id.user_toolbar);
+
+        if (preferences.getString("myusername","").equals("")){
+            login.setVisibility(View.GONE);
+            logout.setVisibility(View.VISIBLE);
+            user.setVisibility(View.VISIBLE);
+
+        }
     }
 
     @Override
@@ -390,6 +415,10 @@ public class mainInt extends AppCompatActivity
         if (network_connected && gps_connected) connections_working = true;
         Log.i(TAG,"Connecting apiclient");
         mGoogleApiClient.connect();
+
+        if (preferences.getString("myusername","").equals("")){
+            LoggedIn();
+        }
 
     }
 

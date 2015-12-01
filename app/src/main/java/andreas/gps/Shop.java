@@ -12,7 +12,6 @@ import android.widget.TextView;
  */
 public class Shop extends AppCompatActivity {
 
-    private String PointInformation = "Remaining Points :  ";
     static final String STATE_SCORE = "playerScore";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,8 @@ public class Shop extends AppCompatActivity {
         Log.i("point", "succes2");
         TextView points_score = (TextView) findViewById(R.id.powerUpPoints);
         String points_str = Integer.toString(storedPreference);
-        points_score.setText(PointInformation + points_str);
+        String pointInformation = "Remaining Points :  ";
+        points_score.setText(pointInformation + points_str);
         // set remaining points
 
 

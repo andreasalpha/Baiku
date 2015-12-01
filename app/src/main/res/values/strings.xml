@@ -48,5 +48,6 @@
     <string name="powerUpDefensiveHardKill">hard kill move</string>
     <string name="label_shop">shop</string>
     <string name="buy_text">buy</string>
+    <string name="login_button_text">Login</string>
 
 </resources>

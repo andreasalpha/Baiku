@@ -71,11 +71,13 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                 if (!correctLogin(login_edit_string,password_edit_string)){
                     Toast.makeText(getApplicationContext(), "Username or password is incorrect.", Toast.LENGTH_SHORT).show();
                 }
-                editor.putString("myusername",login_edit_string);
-                editor.apply();
+                else{
+                    editor.putString("myusername",login_edit_string);
+                    editor.apply();
 
-                intent = new Intent(this,mainInt.class);
-                startActivity(intent);
+                    intent = new Intent(this,mainInt.class);
+                    startActivity(intent);
+                }
 
                 break;
 

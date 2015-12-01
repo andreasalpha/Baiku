@@ -64,10 +64,8 @@ public class gameMode extends AppCompatActivity
 
     //    variables
 
-    private Circle circleLoc;
     private Circle circleTarget;
-    private MyLocations locations = new MyLocations();
-    private double r = 5.0;
+    private double r = 10.0;
     private static final String TAG = "abcd";
     private LatLng CURRENT_TARGET;
     private Marker markerTarget;
@@ -250,7 +248,6 @@ public class gameMode extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.toolbar_shop) {
-            switchShop(null);
         }
 
         return super.onOptionsItemSelected(item);
@@ -351,24 +348,6 @@ public class gameMode extends AppCompatActivity
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, zoomlevel));
             zoomed = true;
         }
-        locations.addMyLocation(loc);
-
-        if (circleLoc == null) {
-            circleLoc = mMap.addCircle(new CircleOptions()
-                    .center(loc)
-                    .radius(r)
-                    .strokeColor(Color.BLUE));
-        } else {
-            circleLoc.remove();
-
-            if (mMap != null) {
-                circleLoc = mMap.addCircle(new CircleOptions()
-                        .center(loc)
-                        .radius(r)
-                        .strokeColor(Color.BLUE));
-            }
-        }
-
 
         if (mymarker != null) {
             mymarker.remove();
@@ -890,7 +869,6 @@ public class gameMode extends AppCompatActivity
 
         }
 
-            locations.addTargetLocation(CURRENT_TARGET);
         } else {
             changeTarget();
         }
@@ -966,13 +944,9 @@ public class gameMode extends AppCompatActivity
             Log.i(TAG, e.toString());
         } catch (JSONException e){
             Log.i(TAG,e.toString());
+        } catch (NullPointerException e){
+            Log.i(TAG,e.toString());
         }
-    }
-
-
-    public void switchShop(View view) {
-        Intent intent = new Intent(this, Shop.class);
-        startActivity(intent);
     }
 }
 
