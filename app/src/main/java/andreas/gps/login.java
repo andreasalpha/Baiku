@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     Intent intent;
+    String TAG = "abcd";
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public class login extends AppCompatActivity implements View.OnClickListener{
         boolean pass;
         Integer n = 0;
         try{
+            Log.i(TAG,DataOnServer.toString());
             JSONArray Obj = DataOnServer.getJSONArray("data");
             while (n <= Obj.length()){
 
@@ -109,8 +112,8 @@ public class login extends AppCompatActivity implements View.OnClickListener{
                 }
                 n+=1;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            Toast.makeText(login.this, "Not synced with server yet,\nwait a minute and try again", Toast.LENGTH_SHORT).show();
         }
 
         return correct;
