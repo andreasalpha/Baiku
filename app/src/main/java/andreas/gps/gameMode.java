@@ -151,6 +151,7 @@ public class gameMode extends AppCompatActivity
     public int targetpoints = 0;
     public int mymoney;
     Dialog alertDialog;
+    public String abc = "abc";
     public boolean pressquit = false;
     public boolean stopSignal = false;
     Integer frequencyUpdate = 32768;
