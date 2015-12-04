@@ -52,6 +52,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -59,16 +62,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.EmptyStackException;
-import java.lang.Math;
 import java.util.Random;
 
 import andreas.gps.sensoren.SensorActor;
 import andreas.gps.sensoren.SensorCollector;
 import andreas.gps.sensoren.Sensor_SAVE;
+import andreas.gps.sensoren.Sensor_SAVE_max_accelero;
 import andreas.gps.sensoren.SoundAct;
 
 public class gameMode extends AppCompatActivity
@@ -113,7 +113,7 @@ public class gameMode extends AppCompatActivity
     private String killmoveSpeedText = "Get to your highest speed!";
     private String killmovelightText = "Remove all light!";
     private String killmovePressButtonText = "Press him to death!";
-    private double killmoveAcellorValue = 0.5;
+    private double killmoveAcellorValue = 20;
     private double killmoveGyroValue = 40;
     private double killmoveSoundValue = 25000;
     private double killmoveSpeedValue = 6.4;
@@ -201,6 +201,8 @@ public class gameMode extends AppCompatActivity
     //Lifecycle
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         Log.i(TAG, "Got into oncreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nav_drawer_low_in_rank);
@@ -237,6 +239,7 @@ public class gameMode extends AppCompatActivity
         points_score = (TextView) findViewById(R.id.points_score);
         SensorActor sensorsave = new Sensor_SAVE();
         sensorcol = new SensorCollector(sensorsave);
+        sensorcol.start(getApplicationContext());
         myusername = preferences.getString("myusername","unknown");
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -248,6 +251,8 @@ public class gameMode extends AppCompatActivity
                 .setInterval(5000)        // 5 seconds, in milliseconds
                 .setFastestInterval(1000); // 1 second, in milliseconds
         assignTargetLocationRequest();
+        ////////////// test
+        //killMoveAccelor();
 
         Log.i(TAG, "Oncreate success");
     }
@@ -556,17 +561,19 @@ public class gameMode extends AppCompatActivity
             }
         }
     }
+    private int test=0;
     public void killMoveAccelor() {
 
         new CountDownTimer(killmovetimer, 200) {
             TextView killMoveText = (TextView) findViewById(R.id.killMoveText);
             TextView points_score = (TextView) findViewById(R.id.points_score);
-            public Sensor_SAVE sensorsave = new Sensor_SAVE();
+            public Sensor_SAVE_max_accelero sensorsave = new Sensor_SAVE_max_accelero();
             SensorCollector sensorcol = new SensorCollector(sensorsave);
 
             public void onTick(long millisUntilFinished) {
                 killMoveText.setVisibility(View.VISIBLE);
                 sensorcol.start(getApplicationContext());
+
 
                 if (!killmoveconfirmed) {
                     killMoveText.setText(killmoveAcellorText + millisUntilFinished / 1000);
@@ -574,7 +581,7 @@ public class gameMode extends AppCompatActivity
 
                 try {
 
-                    if (sensorsave.getAccelerox() > killmoveAcellorValue) {
+                    if (sensorsave.getMaxXaccelero() > killmoveAcellorValue) {
                         killMoveText.setText(killedText);
                         killmoveconfirmed=true;
 
@@ -654,8 +661,9 @@ public class gameMode extends AppCompatActivity
         new CountDownTimer(killmovetimer, 200) {
             TextView killMoveText = (TextView) findViewById(R.id.killMoveText);
             TextView points_score = (TextView) findViewById(R.id.points_score);
-            public Sensor_SAVE sensorsave = new Sensor_SAVE();
+            public Sensor_SAVE_max_accelero sensorsave = new Sensor_SAVE_max_accelero();
             SensorCollector sensorcol = new SensorCollector(sensorsave);
+
 
             public void onTick(long millisUntilFinished) {
                 killMoveText.setVisibility(View.VISIBLE);
@@ -666,7 +674,7 @@ public class gameMode extends AppCompatActivity
                 }
 
                 try {
-                    if (sensorsave.getGyroscoopx() > killmoveGyroValue) {
+                    if (sensorsave.getMaxXgyro() > killmoveGyroValue) {
                         killMoveText.setText(killedText);
                         killmoveconfirmed=true;
 
